@@ -6,7 +6,7 @@ namespace trpo_lw2
 {
     class Program
     {
-        class Matrix
+        class Matrix : ICloneable
         {
             private double[,] data;
 
@@ -143,7 +143,7 @@ namespace trpo_lw2
                 if ((m1.Rows != m2.Rows) || (m1.Columns != m2.Columns))
                     throw new Exception("Сложение матриц разного размера");
 
-                Matrix result = (Matrix) m1.MemberwiseClone();
+                Matrix result = (Matrix) m1.Clone();
                 for (int j = 0; j < result.Rows; j++)
                 {
                     for (int i = 0; i < result.Columns; i++)
@@ -160,7 +160,7 @@ namespace trpo_lw2
                 if ((m1.Rows != m2.Rows) || (m1.Columns != m2.Columns))
                     throw new Exception("Ошибка: вычитание матриц разного размера!");
 
-                Matrix result = (Matrix)m1.MemberwiseClone();
+                Matrix result = (Matrix) m1.Clone();
                 for (int j = 0; j < result.Rows; j++)
                 {
                     for (int i = 0; i < result.Columns; i++)
@@ -174,7 +174,7 @@ namespace trpo_lw2
 
             public static Matrix operator *(Matrix m1, double d)
             {
-                Matrix result = (Matrix)m1.MemberwiseClone();
+                Matrix result = (Matrix) m1.Clone();
                 for (int j = 0; j < result.Rows; j++)
                 {
                     for (int i = 0; i < result.Columns; i++)
@@ -360,6 +360,11 @@ namespace trpo_lw2
                 m = parsedMatrix;
                 return true;
             }
+
+            public object Clone()
+            {
+                return new Matrix(data);
+            }
         }
 
         static void Main(string[] args)
@@ -536,27 +541,37 @@ namespace trpo_lw2
                 Console.WriteLine("5 - Перемножение матриц");
                 Console.WriteLine("Любая другая клавиша - Вернуться в главное меню");
 
-                switch (char.ToLower(Console.ReadKey(true).KeyChar))
+                try
                 {
-                    case '1':
-                        HandleTransposition(matrices);
-                        break;
-                    case '2':
-                        HandleMultiplicationByNumber(matrices);
-                        break;
-                    case '3':
-                        HandleAdding(matrices);
-                        break;
-                    case '4':
-                        HandleSubtraction(matrices);
-                        break;
-                    case '5':
-                        HandleMultiplicationByMatrix(matrices);
-                        break;
-                    default:
-                        closeMenu = true;
-                        break;
+                    switch (char.ToLower(Console.ReadKey(true).KeyChar))
+                    {
+                        case '1':
+                            HandleTransposition(matrices);
+                            break;
+                        case '2':
+                            HandleMultiplicationByNumber(matrices);
+                            break;
+                        case '3':
+                            HandleAdding(matrices);
+                            break;
+                        case '4':
+                            HandleSubtraction(matrices);
+                            break;
+                        case '5':
+                            HandleMultiplicationByMatrix(matrices);
+                            break;
+                        default:
+                            closeMenu = true;
+                            break;
+                    }
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"\nПроизошла ошибка! {e.Message}");
+                }
+
+                Console.WriteLine("Нажмите любую клавишу для возврата к меню операций\n");
+                Console.ReadKey();
             }
         }
 
@@ -569,8 +584,7 @@ namespace trpo_lw2
             string resultName = GetNameForNewMatrix(matrices);
 
             AddMatrixToDictionary(resultName, matrices[operandName].Transpose(), matrices);
-            Console.WriteLine("\nОперация выполнена! Нажмите любую клавишу для возврата к меню операций\n");
-            Console.ReadKey();
+            Console.WriteLine("\nОперация выполнена!");
         }
 
         private static string GetNameOfExistingMatrix(Dictionary<string, Matrix> matrices)
@@ -603,8 +617,7 @@ namespace trpo_lw2
             string resultName = GetNameForNewMatrix(matrices);
 
             AddMatrixToDictionary(resultName, matrices[operandName]*operandNumber, matrices);
-            Console.WriteLine("\nОперация выполнена! Нажмите любую клавишу для возврата к меню операций\n");
-            Console.ReadKey();
+            Console.WriteLine("\nОперация выполнена!");
         }
 
         private static void HandleAdding(Dictionary<string, Matrix> matrices)
@@ -619,8 +632,7 @@ namespace trpo_lw2
             string resultName = GetNameForNewMatrix(matrices);
 
             AddMatrixToDictionary(resultName, matrices[operandName1] + matrices[operandName2], matrices);
-            Console.WriteLine("\nОперация выполнена! Нажмите любую клавишу для возврата к меню операций\n");
-            Console.ReadKey();
+            Console.WriteLine("\nОперация выполнена!");
         }
 
         private static void HandleSubtraction(Dictionary<string, Matrix> matrices)
@@ -635,8 +647,7 @@ namespace trpo_lw2
             string resultName = GetNameForNewMatrix(matrices);
 
             AddMatrixToDictionary(resultName, matrices[operandName1] - matrices[operandName2], matrices);
-            Console.WriteLine("\nОперация выполнена! Нажмите любую клавишу для возврата к меню операций\n");
-            Console.ReadKey();
+            Console.WriteLine("\nОперация выполнена!");
         }
 
         private static void HandleMultiplicationByMatrix(Dictionary<string, Matrix> matrices)
@@ -651,8 +662,7 @@ namespace trpo_lw2
             string resultName = GetNameForNewMatrix(matrices);
 
             AddMatrixToDictionary(resultName, matrices[operandName1] * matrices[operandName2], matrices);
-            Console.WriteLine("\nОперация выполнена! Нажмите любую клавишу для возврата к меню операций\n");
-            Console.ReadKey();
+            Console.WriteLine("\nОперация выполнена!");
         }
 
         private static void PrintAllMatrices(Dictionary<string, Matrix> matrices)
@@ -677,7 +687,7 @@ namespace trpo_lw2
 
             Console.Clear();
             PrintAllMatrices(matrices);
-            Console.WriteLine("\nВведите название матрицы для отображения информации о ней или пустую строку для возврата в главное меню:");
+            Console.WriteLine("\nВводите названия матриц для отображения информации о них или пустую строку для возврата в главное меню:");
             do
             {
                 string name = Console.ReadLine();
@@ -689,6 +699,7 @@ namespace trpo_lw2
             } while (true);
         }
 
+        // Тестирование работы матриц
         private static void TestMatrixClass()
         {
             // Работа матрицы с поэлементным заполнением
