@@ -563,7 +563,7 @@ namespace trpo_lw2
         private static void HandleTransposition(Dictionary<string, Matrix> matrices)
         {
             Console.WriteLine("\nВведите название транспонируемой матрицы:");
-            string operandName = GetNameForOperandMatrix(matrices);
+            string operandName = GetNameOfExistingMatrix(matrices);
 
             Console.WriteLine("\nВведите название новой матрицы:");
             string resultName = GetNameForNewMatrix(matrices);
@@ -573,7 +573,7 @@ namespace trpo_lw2
             Console.ReadKey();
         }
 
-        private static string GetNameForOperandMatrix(Dictionary<string, Matrix> matrices)
+        private static string GetNameOfExistingMatrix(Dictionary<string, Matrix> matrices)
         {
             string operandName;
             do
@@ -594,7 +594,7 @@ namespace trpo_lw2
         private static void HandleMultiplicationByNumber(Dictionary<string, Matrix> matrices)
         {
             Console.WriteLine("\nВведите название умножаемой матрицы:");
-            string operandName = GetNameForOperandMatrix(matrices);
+            string operandName = GetNameOfExistingMatrix(matrices);
 
             Console.WriteLine("\nВведите множитель:");
             double operandNumber = Double.Parse(Console.ReadLine() ?? string.Empty, CultureInfo.InvariantCulture);
@@ -610,10 +610,10 @@ namespace trpo_lw2
         private static void HandleAdding(Dictionary<string, Matrix> matrices)
         {
             Console.WriteLine("\nВведите название первого слагаемого:");
-            string operandName1 = GetNameForOperandMatrix(matrices);
+            string operandName1 = GetNameOfExistingMatrix(matrices);
 
             Console.WriteLine("\nВведите название второго слагаемого:");
-            string operandName2 = GetNameForOperandMatrix(matrices);
+            string operandName2 = GetNameOfExistingMatrix(matrices);
 
             Console.WriteLine("\nВведите название новой матрицы:");
             string resultName = GetNameForNewMatrix(matrices);
@@ -626,10 +626,10 @@ namespace trpo_lw2
         private static void HandleSubtraction(Dictionary<string, Matrix> matrices)
         {
             Console.WriteLine("\nВведите название уменьшаемого:");
-            string operandName1 = GetNameForOperandMatrix(matrices);
+            string operandName1 = GetNameOfExistingMatrix(matrices);
 
             Console.WriteLine("\nВведите название вычитаемого:");
-            string operandName2 = GetNameForOperandMatrix(matrices);
+            string operandName2 = GetNameOfExistingMatrix(matrices);
 
             Console.WriteLine("\nВведите название новой матрицы:");
             string resultName = GetNameForNewMatrix(matrices);
@@ -642,10 +642,10 @@ namespace trpo_lw2
         private static void HandleMultiplicationByMatrix(Dictionary<string, Matrix> matrices)
         {
             Console.WriteLine("\nВведите название первого множителя:");
-            string operandName1 = GetNameForOperandMatrix(matrices);
+            string operandName1 = GetNameOfExistingMatrix(matrices);
 
             Console.WriteLine("\nВведите название второго множителя:");
-            string operandName2 = GetNameForOperandMatrix(matrices);
+            string operandName2 = GetNameOfExistingMatrix(matrices);
 
             Console.WriteLine("\nВведите название новой матрицы:");
             string resultName = GetNameForNewMatrix(matrices);
@@ -666,8 +666,27 @@ namespace trpo_lw2
 
         private static void HandleResultInfo(Dictionary<string, Matrix> matrices)
         {
+            if (matrices.Count == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("Сначала добавьте хотя бы одну матрицу!");
+                Console.WriteLine("Нажмите любую клавишу чтобы вернуться в главное меню");
+                Console.ReadKey();
+                return;
+            }
+
             Console.Clear();
             PrintAllMatrices(matrices);
+            Console.WriteLine("\nВведите название матрицы для отображения информации о ней или пустую строку для возврата в главное меню:");
+            do
+            {
+                string name = Console.ReadLine();
+                if (string.IsNullOrEmpty(name)) return;
+
+                if (!matrices.ContainsKey(name)) Console.WriteLine("Такой матрицы не существует!");
+                else PrintMatrixInfo(matrices[name]);
+                Console.WriteLine();
+            } while (true);
         }
 
         private static void TestMatrixClass()
