@@ -46,6 +46,11 @@ namespace trpo_lw3
         }
 
         public abstract void PrintDimension();
+
+        public virtual double GetArea()
+        {
+            throw new Exception("Ошибка: попытка получить площадь неопределённой фигуры!");
+        }
     }
 
     class FigureComparer : IComparer<Figure>
@@ -69,6 +74,53 @@ namespace trpo_lw3
                 default:
                     return 0;
             }
+        }
+    }
+
+    class Shape2D : Figure {
+        private double[] _centerCoords;
+
+        public double[] CenterCoords
+        {
+            get => _centerCoords;
+            set
+            {
+                if (value.Length != 2)
+                {
+                    throw new Exception("Ошибка: в массиве координат должно быть ровно два значения!");
+                }
+
+                _centerCoords = value;
+            }
+        }
+
+        public sealed override void PrintDimension()
+        {
+            Console.WriteLine("2D фигура.");
+        }
+    }
+
+    class Shape3D : Figure
+    {
+        private double[] _centerCoords;
+
+        public double[] CenterCoords
+        {
+            get => _centerCoords;
+            set
+            {
+                if (value.Length != 3)
+                {
+                    throw new Exception("Ошибка: в массиве координат должно быть ровно три значения!");
+                }
+
+                _centerCoords = value;
+            }
+        }
+
+        public sealed override void PrintDimension()
+        {
+            Console.WriteLine("3D фигура.");
         }
     }
 
