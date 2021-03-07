@@ -34,7 +34,7 @@ namespace trpo_lw3
             get => _color.ToString();
             set
             {
-                if (Enum.IsDefined(typeof(ColorEnum), value))
+                if (!Enum.IsDefined(typeof(ColorEnum), value))
                 {
                     throw new Exception("Ошибка: некорректный цвет! Допустимые цвета: Red, Green или Blue.");
                 }
@@ -97,9 +97,21 @@ namespace trpo_lw3
             }
         }
 
+        public Shape2D(string name, double[] centerCoords, string color)
+        {
+            Name = name;
+            CenterCoords = centerCoords;
+            Color = color;
+        }
+
         public sealed override void PrintDimension()
         {
             Console.WriteLine("Размерность: 2D фигура");
+        }
+
+        public void PrintCenterCoords()
+        {
+            Console.WriteLine($"Координаты центра: {_centerCoords[0]} по X; {_centerCoords[1]} по Y");
         }
     }
 
@@ -120,9 +132,21 @@ namespace trpo_lw3
             }
         }
 
+        public Shape3D(string name, double[] centerCoords, string color)
+        {
+            Name = name;
+            CenterCoords = centerCoords;
+            Color = color;
+        }
+
         public sealed override void PrintDimension()
         {
             Console.WriteLine("Размерность: 3D фигура");
+        }
+
+        public void PrintCenterCoords()
+        {
+            Console.WriteLine($"Координаты центра: {_centerCoords[0]} по X; {_centerCoords[1]} по Y; {_centerCoords[2]} по Z");
         }
     }
 
@@ -143,12 +167,9 @@ namespace trpo_lw3
             }
         }
 
-        public Square(string name, double side, double[] centerCoords, string color)
+        public Square(string name, double side, double[] centerCoords, string color) : base(name, centerCoords, color)
         {
-            Name = name;
             Side = side;
-            CenterCoords = centerCoords;
-            Color = color;
         }
 
         public override double GetArea()
@@ -162,6 +183,7 @@ namespace trpo_lw3
             Console.WriteLine($"Название: {Name}");
             Console.WriteLine($"Цвет: {Color}");
             PrintDimension();
+            PrintCenterCoords();
             Console.WriteLine($"Сторона: {Side}");
             Console.WriteLine($"Площадь: {GetArea()}");
         }
@@ -190,12 +212,9 @@ namespace trpo_lw3
             }
         }
 
-        public Circle(string name, double radius, double[] centerCoords, string color)
+        public Circle(string name, double radius, double[] centerCoords, string color) : base(name, centerCoords, color)
         {
-            Name = name;
             Radius = radius;
-            CenterCoords = centerCoords;
-            Color = color;
         }
 
         public override double GetArea()
@@ -209,6 +228,7 @@ namespace trpo_lw3
             Console.WriteLine($"Название: {Name}");
             Console.WriteLine($"Цвет: {Color}");
             PrintDimension();
+            PrintCenterCoords();
             Console.WriteLine($"Радиус: {Radius}");
             Console.WriteLine($"Площадь: {GetArea()}");
         }
@@ -237,12 +257,9 @@ namespace trpo_lw3
             }
         }
 
-        public Cube(string name, double side, double[] centerCoords, string color)
+        public Cube(string name, double side, double[] centerCoords, string color): base(name, centerCoords, color)
         {
-            Name = name;
             Side = side;
-            CenterCoords = centerCoords;
-            Color = color;
         }
 
         public override double GetArea()
@@ -256,6 +273,7 @@ namespace trpo_lw3
             Console.WriteLine($"Название: {Name}");
             Console.WriteLine($"Цвет: {Color}");
             PrintDimension();
+            PrintCenterCoords();
             Console.WriteLine($"Сторона: {Side}");
             Console.WriteLine($"Площадь: {GetArea()}");
         }
@@ -284,12 +302,9 @@ namespace trpo_lw3
             }
         }
 
-        public Ball(string name, double radius, double[] centerCoords, string color)
+        public Ball(string name, double radius, double[] centerCoords, string color) : base(name, centerCoords, color)
         {
-            Name = name;
             Radius = radius;
-            CenterCoords = centerCoords;
-            Color = color;
         }
 
         public override double GetArea()
@@ -303,6 +318,7 @@ namespace trpo_lw3
             Console.WriteLine($"Название: {Name}");
             Console.WriteLine($"Цвет: {Color}");
             PrintDimension();
+            PrintCenterCoords();
             Console.WriteLine($"Радиус: {Radius}");
             Console.WriteLine($"Площадь: {GetArea()}");
         }
@@ -319,6 +335,8 @@ namespace trpo_lw3
         static void Main(string[] args)
         {
             PrintVariant();
+            Console.WriteLine();
+            TestClasses();
             Console.ReadKey();
         }
 
@@ -328,6 +346,77 @@ namespace trpo_lw3
             const char c2 = 'N';
             const int variant = ((int)c1 + (int)c2) % 9;
             Console.WriteLine($"Вариант {variant}");
+        }
+
+        private static void TestClasses()
+        {
+            //1) Создать корректный Shape2D, PrintDimension, GetArea, PrintInfo, корректно изменить имя - цвет - центр, PrintInfo, некорректно поменять центр
+            //2) Попытаться создать Shape3D с некорректным цветом, создать корректный Shape3D, PrintDimension, PrintInfo, некорректно поменять имя, некорректно поменять центр
+            //3) Сравнить по имени и по цвету Shape2D и Shape 3D
+            //4) Попытаться создать Square c некорректной стороной, создать корректный Square через конструктор, PrintInfo
+            //5) Создать корректный Square через Create, PrintInfo, попытаться присвоить некорректный side
+            //6) Попытаться создать Circle c некорректным радиусом, создать корректный Circle через конструктор, PrintInfo
+            //7) Создать корректный Circle через Create, PrintInfo, попытаться присвоить некорректный radius
+            //8) Попытаться создать Cube c некорректной стороной, создать корректный Cube через конструктор, PrintInfo
+            //9) Создать корректный Cube через Create, PrintInfo, попытаться присвоить некорректный side
+            //10) Попытаться создать Ball c некорректным радиусом, создать корректный Ball через конструктор, PrintInfo
+            //11) Создать корректный Ball через Create, PrintInfo, попытаться присвоить некорректный radius
+
+            Console.WriteLine("Тестирование работы классов:");
+            Console.WriteLine("\n1. Проверка работы Shape2D:");
+            Console.WriteLine("\nСоздана 2D фигура.");
+            var shape2D = new Shape2D("shape1", new [] {8.63, 9.98}, "Red");
+            Console.WriteLine("\nВывод размерности:");
+            shape2D.PrintDimension();
+            Console.WriteLine("\nПопытка вывести площадь:");
+            try
+            {
+                shape2D.GetArea();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            Console.WriteLine("\nВывод информации и координат:");
+            shape2D.PrintInfo();
+            shape2D.PrintCenterCoords();
+            shape2D.Name = "newShape1";
+            shape2D.Color = "Green";
+            shape2D.CenterCoords[0] = -1.52;
+            Console.WriteLine("\nВывод информации и координат после изменения полей:");
+            shape2D.PrintInfo();
+            shape2D.PrintCenterCoords();
+            Console.WriteLine("\nПопытка задания некорректных координат центра:");
+            try
+            {
+                shape2D.CenterCoords = new[] {2.91, 3.09, 2.02};
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+
+            Console.WriteLine("---------------------------------------------------------------\n\n2. Проверка работы Shape3D:");
+
+            Console.WriteLine("---------------------------------------------------------------\n\n3. Проверка работы сравнения:");
+
+            Console.WriteLine("---------------------------------------------------------------\n\n4. Проверка работы Square, созданного через конструктор:");
+
+            Console.WriteLine("---------------------------------------------------------------\n\n5. Проверка работы Square, созданного через Create:");
+
+            Console.WriteLine("---------------------------------------------------------------\n\n6. Проверка работы Circle, созданного через конструктор:");
+
+            Console.WriteLine("---------------------------------------------------------------\n\n7. Проверка работы Circle, созданного через Create:");
+
+            Console.WriteLine("---------------------------------------------------------------\n\n8. Проверка работы Cube, созданного через конструктор:");
+
+            Console.WriteLine("---------------------------------------------------------------\n\n9. Проверка работы Cube, созданного через Create:");
+
+            Console.WriteLine("---------------------------------------------------------------\n\n10. Проверка работы Ball, созданного через конструктор:");
+
+            Console.WriteLine("---------------------------------------------------------------\n\n11. Проверка работы Ball, созданного через Create:");
+
         }
     }
 }
