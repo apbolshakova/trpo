@@ -631,7 +631,166 @@ namespace trpo_lw3
 
         private static void HandleCreation(List<Figure> figures)
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            Console.WriteLine("Введите название новой фигуры:");
+            string name = GetNameForNewFigure(figures);
+
+            Console.WriteLine("\nВыберите цвет фигуры:");
+            Console.WriteLine("1 - Красный");
+            Console.WriteLine("2 - Зелёный");
+            Console.WriteLine("3 - Синий");
+            Console.WriteLine("Любая другая клавиша - Отменить создание");
+            string color;
+            switch (char.ToLower(Console.ReadKey(true).KeyChar))
+            {
+                case '1':
+                    color = "Red";
+                    break;
+                case '2':
+                    color = "Green";
+                    break;
+                case '3':
+                    color = "Blue";
+                    break;
+                default:
+                    return;
+            }
+
+            Console.WriteLine("\nВыберите тип фигуры:");
+            Console.WriteLine("1 - Квадрат");
+            Console.WriteLine("2 - Круг");
+            Console.WriteLine("3 - Куб");
+            Console.WriteLine("4 - Шар");
+            Console.WriteLine("Любая другая клавиша - Отменить создание");
+            double[] centerCoords;
+            double size;
+            Figure newFigure;
+            switch (char.ToLower(Console.ReadKey(true).KeyChar))
+            {
+                case '1':
+                    centerCoords = Get2dCoords();
+                    size = GetSide();
+                    newFigure = Square.Create(name, size, centerCoords, color);
+                    break;
+
+                case '2':
+                    centerCoords = Get2dCoords();
+                    size = GetRadius();
+                    newFigure = Circle.Create(name, size, centerCoords, color);
+                    break;
+
+                case '3':
+                    centerCoords = Get3dCoords();
+                    size = GetSide();
+                    newFigure = Cube.Create(name, size, centerCoords, color);
+                    break;
+
+                case '4':
+                    centerCoords = Get3dCoords();
+                    size = GetRadius();
+                    newFigure = Ball.Create(name, size, centerCoords, color);
+                    break;
+
+                default:
+                    return;
+            }
+
+            figures.Add(newFigure);
+            Console.WriteLine("\nФигура успешно создана!\n");
+            newFigure.PrintInfo();
+            Console.WriteLine("\nНажмите любую клавишу для возврата в главное меню");
+            Console.ReadKey();
+        }
+
+        private static string GetNameForNewFigure(List<Figure> figures)
+        {
+            string name;
+            do
+            {
+                name = Console.ReadLine();
+                if (string.IsNullOrEmpty(name))
+                {
+                    Console.WriteLine("Нельзя создать фигуру без названия!");
+                    continue;
+                }
+
+                if (figures.Exists(el => el.Name == name))
+                {
+                    Console.WriteLine("Предупреждение: такая фигура уже существует и будет перезаписана!");
+                }
+            } while (string.IsNullOrEmpty(name));
+
+            return name;
+        }
+
+        private static double[] Get2dCoords()
+        {
+            double[] coords = new double[2];
+            Console.WriteLine("\nВведите координаты центра фигуры.");
+
+            Console.WriteLine("По X: ");
+            while (!double.TryParse(Console.ReadLine(), out coords[0]))
+            {
+                Console.WriteLine("Координата должна быть числом!");
+            }
+            
+            Console.WriteLine("По Y: ");
+            while (!double.TryParse(Console.ReadLine(), out coords[1]))
+            {
+                Console.WriteLine("Координата должна быть числом!");
+            }
+
+            return coords;
+        }
+
+        private static double[] Get3dCoords()
+        {
+            double[] coords = new double[3];
+            Console.WriteLine("\nВведите координаты центра фигуры.");
+
+            Console.WriteLine("По X: ");
+            while (!double.TryParse(Console.ReadLine(), out coords[0]))
+            {
+                Console.WriteLine("Координата должна быть числом!");
+            }
+
+            Console.WriteLine("По Y: ");
+            while (!double.TryParse(Console.ReadLine(), out coords[1]))
+            {
+                Console.WriteLine("Координата должна быть числом!");
+            }
+
+            Console.WriteLine("По Z: ");
+            while (!double.TryParse(Console.ReadLine(), out coords[2]))
+            {
+                Console.WriteLine("Координата должна быть числом!");
+            }
+
+            return coords;
+        }
+
+        private static double GetSide()
+        {
+            Console.WriteLine("Введите размер стороны:");
+            double side;
+            while (!double.TryParse(Console.ReadLine(), out side) || side <= 0)
+            {
+                Console.WriteLine("Размер должен быть положительным числом!");
+            }
+
+            return side;
+        }
+
+        private static double GetRadius()
+        {
+            Console.WriteLine("Введите радиус:");
+            double radius;
+            while (!double.TryParse(Console.ReadLine(), out radius) || radius <= 0)
+            {
+                Console.WriteLine("Радиус должен быть положительным числом!");
+            }
+
+            return radius;
         }
 
         private static void HandleListPrinting(List<Figure> figures)
