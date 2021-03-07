@@ -822,16 +822,49 @@ namespace trpo_lw3
 
         private static void PrintAllFigures(List<Figure> figures)
         {
-            Console.WriteLine("Список фигур:");
+            Console.WriteLine("Список фигур:"); 
             foreach (Figure figure in figures)
             {
-                Console.WriteLine($"{figure.Name} ({figure.GetType().Name})");
+                Console.WriteLine($"{figure.Name} ({figure.Color} {figure.GetType().Name})");
             }
         }
 
         private static void HandleSorting(List<Figure> figures)
         {
-            throw new NotImplementedException();
+            Console.Clear();
+
+            if (figures.Count == 0)
+            {
+                Console.WriteLine("Сначала добавьте хотя бы одну фигуру!");
+                Console.WriteLine("Нажмите любую клавишу чтобы вернуться в главное меню");
+                Console.ReadKey();
+                return;
+            }
+
+            FigureComparer figureComparer = new FigureComparer() {};
+
+            Console.WriteLine("Выберите тип сортировки:");
+            Console.WriteLine("1 - По названию");
+            Console.WriteLine("2 - По цвету");
+            Console.WriteLine("Любая другая клавиша - Отменить сортировку");
+
+            switch (char.ToLower(Console.ReadKey(true).KeyChar))
+            {
+                case '1':
+                    figureComparer.Field = FigureComparer.CompareField.ByName;
+                    break;
+                case '2':
+                    figureComparer.Field = FigureComparer.CompareField.ByColor;
+                    break;
+                default:
+                    return;
+            }
+            figures.Sort(figureComparer);
+
+            Console.WriteLine("\nСортировка успешно выполнена!\n");
+            PrintAllFigures(figures);
+            Console.WriteLine("\nНажмите любую клавишу чтобы вернуться в главное меню");
+            Console.ReadKey();
         }
 
         private static void HandleCounting(List<Figure> figures)
