@@ -337,7 +337,10 @@ namespace trpo_lw3
             PrintVariant();
             Console.WriteLine();
             TestClasses();
+            Console.WriteLine();
+            Console.WriteLine("Нажмите любую кнопку чтобы перейти в консольное меню.");
             Console.ReadKey();
+            StartMainLoop();
         }
 
         private static void PrintVariant()
@@ -556,18 +559,109 @@ namespace trpo_lw3
             List<Figure> figures = new List<Figure>() { shape2D, shape3D, square1, circle1, cube1, ball1, square2, circle2, cube2, ball2 };
             FigureComparer figureComparer = new FigureComparer() { Field = FigureComparer.CompareField.ByName };
             figures.Sort(figureComparer);
-            Console.WriteLine("\nПорядок после сортировки по имени: ");
+            Console.WriteLine("\nПорядок после сортировки по имени:");
             foreach (Figure figure in figures)
             {
                 Console.WriteLine($"{figure.Name} ");
             }
             figureComparer.Field = FigureComparer.CompareField.ByColor;
             figures.Sort(figureComparer);
-            Console.WriteLine("\n\nПорядок после сортировки по цвету: ");
+            Console.WriteLine("\nПорядок после сортировки по цвету:");
             foreach (Figure figure in figures)
             {
                 Console.WriteLine($"{figure.Name} ({figure.Color}) ");
             }
+        }
+
+        private static void StartMainLoop()
+        {
+            List<Figure> figures = new List<Figure>();
+
+            bool closeApp = false;
+
+            while (!closeApp)
+            {
+                Console.Clear();
+                PrintMainMenu();
+
+                switch (char.ToLower(Console.ReadKey(true).KeyChar))
+                {
+                    case '1':
+                        HandleCreation(figures);
+                        break;
+                    case '2':
+                        HandleListPrinting(figures);
+                        break;
+                    case '3':
+                        HandleInfoPrinting(figures);
+                        break;
+                    case '4':
+                        HandleSorting(figures);
+                        break;
+                    case '5':
+                        HandleCounting(figures);
+                        break;
+                    case '6':
+                        HandleSearching(figures);
+                        break;
+                    case '7':
+                        HandleSummation(figures);
+                        break;
+                    case '0':
+                        closeApp = true;
+                        break;
+                }
+            }
+        }
+
+        private static void PrintMainMenu()
+        {
+            Console.WriteLine("Работа с фигурами");
+            Console.WriteLine("-------------------------------");
+            Console.WriteLine("1 – Создать фигуру");
+            Console.WriteLine("2 – Вывести список фигур");
+            Console.WriteLine("3 – Посмотреть информацию о фигурах");
+            Console.WriteLine("4 - Сортировка фигур");
+            Console.WriteLine("5 - Подсчёт количества фигур");
+            Console.WriteLine("6 - Поиск среди фигур");
+            Console.WriteLine("7 - Подсчёт суммы площадей фигур");
+            Console.WriteLine("0 - Выход");
+            Console.WriteLine("-------------------------------");
+        }
+
+        private static void HandleCreation(List<Figure> figures)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void HandleListPrinting(List<Figure> figures)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void HandleInfoPrinting(List<Figure> figures)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void HandleSorting(List<Figure> figures)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void HandleCounting(List<Figure> figures)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void HandleSearching(List<Figure> figures)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void HandleSummation(List<Figure> figures)
+        {
+            throw new NotImplementedException();
         }
     }
 }
