@@ -188,7 +188,7 @@ namespace trpo_lw3
             Console.WriteLine($"Площадь: {GetArea()}");
         }
 
-        static Square Create(string name, double side, double[] centerCoords, string color)
+        public static Square Create(string name, double side, double[] centerCoords, string color)
         {
             Square square = new Square(name, side, centerCoords, color);
             return square;
@@ -233,7 +233,7 @@ namespace trpo_lw3
             Console.WriteLine($"Площадь: {GetArea()}");
         }
 
-        static Circle Create(string name, double radius, double[] centerCoords, string color)
+        public static Circle Create(string name, double radius, double[] centerCoords, string color)
         {
             Circle circle = new Circle(name, radius, centerCoords, color);
             return circle;
@@ -278,14 +278,14 @@ namespace trpo_lw3
             Console.WriteLine($"Площадь: {GetArea()}");
         }
 
-        static Cube Create(string name, double side, double[] centerCoords, string color)
+        public static Cube Create(string name, double side, double[] centerCoords, string color)
         {
             Cube cube = new Cube(name, side, centerCoords, color);
             return cube;
         }
     }
 
-    sealed class Ball : Shape2D
+    sealed class Ball : Shape3D
     {
         private double _radius;
         public double Radius
@@ -323,7 +323,7 @@ namespace trpo_lw3
             Console.WriteLine($"Площадь: {GetArea()}");
         }
 
-        static Ball Create(string name, double radius, double[] centerCoords, string color)
+        public static Ball Create(string name, double radius, double[] centerCoords, string color)
         {
             Ball ball = new Ball(name, radius, centerCoords, color);
             return ball;
@@ -350,19 +350,20 @@ namespace trpo_lw3
 
         private static void TestClasses()
         {
-            //1) Создать корректный Shape2D, PrintDimension, GetArea, PrintInfo, корректно изменить имя - цвет - центр, PrintInfo, некорректно поменять центр
-            //2) Попытаться создать Shape3D с некорректным цветом, создать корректный Shape3D, PrintDimension, PrintInfo, некорректно поменять имя, некорректно поменять центр
-            //3) Сравнить по имени и по цвету Shape2D и Shape 3D
-            //4) Попытаться создать Square c некорректной стороной, создать корректный Square через конструктор, PrintInfo
-            //5) Создать корректный Square через Create, PrintInfo, попытаться присвоить некорректный side
-            //6) Попытаться создать Circle c некорректным радиусом, создать корректный Circle через конструктор, PrintInfo
-            //7) Создать корректный Circle через Create, PrintInfo, попытаться присвоить некорректный radius
-            //8) Попытаться создать Cube c некорректной стороной, создать корректный Cube через конструктор, PrintInfo
-            //9) Создать корректный Cube через Create, PrintInfo, попытаться присвоить некорректный side
-            //10) Попытаться создать Ball c некорректным радиусом, создать корректный Ball через конструктор, PrintInfo
-            //11) Создать корректный Ball через Create, PrintInfo, попытаться присвоить некорректный radius
+            //1) Создать корректный Shape2D, PrintDimension, GetArea, PrintInfo и PrintCenterCoords, корректно изменить имя - цвет - центр, PrintInfo и PrintCenterCoords, некорректно поменять центр
+            //2) Попытаться создать Shape3D с некорректным цветом, создать корректный Shape3D, PrintDimension, PrintInfo и PrintCenterCoords, некорректно поменять имя, некорректно поменять центр
+            //3) Попытаться создать Square c некорректной стороной, создать корректный Square через конструктор, PrintInfo
+            //4) Создать корректный Square через Create, PrintInfo, попытаться присвоить некорректный side
+            //5) Попытаться создать Circle c некорректным радиусом, создать корректный Circle через конструктор, PrintInfo
+            //6) Создать корректный Circle через Create, PrintInfo, попытаться присвоить некорректный radius
+            //7) Попытаться создать Cube c некорректной стороной, создать корректный Cube через конструктор, PrintInfo
+            //8) Создать корректный Cube через Create, PrintInfo, попытаться присвоить некорректный side
+            //9) Попытаться создать Ball c некорректным радиусом, создать корректный Ball через конструктор, PrintInfo
+            //10) Создать корректный Ball через Create, PrintInfo, попытаться присвоить некорректный radius
+            //11) Сравнить по имени и по цвету фигуры из тестов
 
             Console.WriteLine("Тестирование работы классов:");
+
             Console.WriteLine("\n1. Проверка работы Shape2D:");
             Console.WriteLine("\nСоздана 2D фигура.");
             var shape2D = new Shape2D("shape1", new [] {8.63, 9.98}, "Red");
@@ -397,26 +398,176 @@ namespace trpo_lw3
             }
 
 
-            Console.WriteLine("---------------------------------------------------------------\n\n2. Проверка работы Shape3D:");
+            Console.WriteLine("\n---------------------------------------------------------------\n\n2. Проверка работы Shape3D:");
+            Shape3D shape3D;
+            Console.WriteLine("\nПопытка создать Shape3D с некорректный цветом:");
+            try
+            {
+                shape3D = new Shape3D("shape2", new[] {6.01, 4.44, 3.03}, "Rainbow");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            Console.WriteLine("\nСоздана 3D фигура.");
+            shape3D = new Shape3D("shape2", new[] {6.01, 4.44, 3.03}, "Blue");
+            Console.WriteLine("\nВывод размерности:");
+            shape3D.PrintDimension();
+            Console.WriteLine("\nВывод информации и координат:");
+            shape3D.PrintInfo();
+            shape3D.PrintCenterCoords();
+            Console.WriteLine("\nПопытка некорректно поменять имя:");
+            try
+            {
+                shape3D.Name = " ";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            Console.WriteLine("\nПопытка задания некорректных координат центра:");
+            try
+            {
+                shape3D.CenterCoords = new[] { 2.91, 3.09 };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
-            Console.WriteLine("---------------------------------------------------------------\n\n3. Проверка работы сравнения:");
+            Console.WriteLine("\n---------------------------------------------------------------\n\n3. Проверка работы Square, созданного через конструктор:");
+            Square square1;
+            Console.WriteLine("\nПопытка создать Square с некорректной стороной:");
+            try
+            {
+                square1 = new Square("square1", -1, new[] { 9.2, 8.3 }, "Red");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            Console.WriteLine("\nСоздан квадрат. Вывод информации:");
+            square1 = new Square("square1", 5, new[] { 9.2, 8.3 }, "Red");
+            square1.PrintInfo();
 
-            Console.WriteLine("---------------------------------------------------------------\n\n4. Проверка работы Square, созданного через конструктор:");
+            Console.WriteLine("\n---------------------------------------------------------------\n\n4. Проверка работы Square, созданного через Create:");
+            Square square2 = Square.Create("square2", 9.1, new[] { 3.9, 3.7 }, "Green");
+            Console.WriteLine("\nСоздан квадрат с помощью метода Create. Вывод информации:");
+            square2.PrintInfo();
+            Console.WriteLine("\nПопытка задать некорректную сторону:");
+            try
+            {
+                square2.Side = -2;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
-            Console.WriteLine("---------------------------------------------------------------\n\n5. Проверка работы Square, созданного через Create:");
+            Console.WriteLine("\n---------------------------------------------------------------\n\n5. Проверка работы Circle, созданного через конструктор:");
+            Circle circle1;
+            Console.WriteLine("\nПопытка создать Circle с некорректным радиусом:");
+            try
+            {
+                circle1 = new Circle("circle1", -1, new[] { 9.2, 8.3 }, "Red");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            Console.WriteLine("\nСоздан круг. Вывод информации:");
+            circle1 = new Circle("circle1", 5, new[] { 9.2, 8.3 }, "Blue");
+            circle1.PrintInfo();
 
-            Console.WriteLine("---------------------------------------------------------------\n\n6. Проверка работы Circle, созданного через конструктор:");
+            Console.WriteLine("\n---------------------------------------------------------------\n\n6. Проверка работы Circle, созданного через Create:");
+            Circle circle2 = Circle.Create("circle2", 9.1, new[] { 3.9, 3.7 }, "Red");
+            Console.WriteLine("\nСоздан круг с помощью метода Create. Вывод информации:");
+            circle2.PrintInfo();
+            Console.WriteLine("\nПопытка задать некорректный радиус:");
+            try
+            {
+                circle2.Radius = -2;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
-            Console.WriteLine("---------------------------------------------------------------\n\n7. Проверка работы Circle, созданного через Create:");
+            Console.WriteLine("\n---------------------------------------------------------------\n\n7. Проверка работы Cube, созданного через конструктор:");
+            Cube cube1;
+            Console.WriteLine("\nПопытка создать Cube с некорректной стороной:");
+            try
+            {
+                cube1 = new Cube("cube1", -1, new[] { 9.2, 8.3, 1.2 }, "Red");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            Console.WriteLine("\nСоздан куб. Вывод информации:");
+            cube1 = new Cube("cube1", 5, new[] { 9.2, 8.3, 1.2 }, "Green");
+            cube1.PrintInfo();
 
-            Console.WriteLine("---------------------------------------------------------------\n\n8. Проверка работы Cube, созданного через конструктор:");
+            Console.WriteLine("\n---------------------------------------------------------------\n\n8. Проверка работы Cube, созданного через Create:");
+            Cube cube2 = Cube.Create("cube2", 9.1, new[] { 3.9, 3.7, 9.2 }, "Blue");
+            Console.WriteLine("\nСоздан куб с помощью метода Create. Вывод информации:");
+            cube2.PrintInfo();
+            Console.WriteLine("\nПопытка задать некорректную сторону:");
+            try
+            {
+                cube2.Side = -2;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
-            Console.WriteLine("---------------------------------------------------------------\n\n9. Проверка работы Cube, созданного через Create:");
+            Console.WriteLine("\n---------------------------------------------------------------\n\n9. Проверка работы Ball, созданного через конструктор:");
+            Ball ball1;
+            Console.WriteLine("\nПопытка создать Ball с некорректным радиусом:");
+            try
+            {
+                ball1 = new Ball("ball1", -1, new[] { 9.2, 8.3, 3.7 }, "Red");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            Console.WriteLine("\nСоздан шар. Вывод информации:");
+            ball1 = new Ball("ball1", 5, new[] { 9.2, 8.3, 3.7 }, "Red");
+            ball1.PrintInfo();
 
-            Console.WriteLine("---------------------------------------------------------------\n\n10. Проверка работы Ball, созданного через конструктор:");
+            Console.WriteLine("\n---------------------------------------------------------------\n\n10. Проверка работы Ball, созданного через Create:");
+            Ball ball2 = Ball.Create("ball2", 9.1, new[] { 3.9, 3.7, 7.7 }, "Green");
+            Console.WriteLine("\nСоздан шар с помощью метода Create. Вывод информации:");
+            ball2.PrintInfo();
+            Console.WriteLine("\nПопытка задать некорректный радиус:");
+            try
+            {
+                ball2.Radius = -2;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
-            Console.WriteLine("---------------------------------------------------------------\n\n11. Проверка работы Ball, созданного через Create:");
-
+            Console.WriteLine("\n---------------------------------------------------------------\n\n11. Проверка работы сравнения:");
+            Console.WriteLine("\nФигуры из предыдущих тестов занесены в список.");
+            List<Figure> figures = new List<Figure>() { shape2D, shape3D, square1, circle1, cube1, ball1, square2, circle2, cube2, ball2 };
+            FigureComparer figureComparer = new FigureComparer() { Field = FigureComparer.CompareField.ByName };
+            figures.Sort(figureComparer);
+            Console.WriteLine("\nПорядок после сортировки по имени: ");
+            foreach (Figure figure in figures)
+            {
+                Console.WriteLine($"{figure.Name} ");
+            }
+            figureComparer.Field = FigureComparer.CompareField.ByColor;
+            figures.Sort(figureComparer);
+            Console.WriteLine("\n\nПорядок после сортировки по цвету: ");
+            foreach (Figure figure in figures)
+            {
+                Console.WriteLine($"{figure.Name} ({figure.Color}) ");
+            }
         }
     }
 }
