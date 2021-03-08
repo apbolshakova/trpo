@@ -770,7 +770,7 @@ namespace trpo_lw3
 
         private static double GetSide()
         {
-            Console.WriteLine("Введите размер стороны:");
+            Console.WriteLine("\nВведите размер стороны:");
             double side;
             while (!double.TryParse(Console.ReadLine(), out side) || side <= 0)
             {
@@ -782,7 +782,7 @@ namespace trpo_lw3
 
         private static double GetRadius()
         {
-            Console.WriteLine("Введите радиус:");
+            Console.WriteLine("\nВведите радиус:");
             double radius;
             while (!double.TryParse(Console.ReadLine(), out radius) || radius <= 0)
             {
@@ -794,14 +794,7 @@ namespace trpo_lw3
 
         private static void HandleInfoPrinting(List<Figure> figures)
         {
-            if (figures.Count == 0)
-            {
-                Console.Clear();
-                Console.WriteLine("Сначала добавьте хотя бы одну фигуру!");
-                Console.WriteLine("Нажмите любую клавишу чтобы вернуться в главное меню");
-                Console.ReadKey();
-                return;
-            }
+            if (DenyDueToNoData(figures)) return;
 
             Console.Clear();
             PrintAllFigures(figures);
@@ -820,6 +813,18 @@ namespace trpo_lw3
             } while (true);
         }
 
+        private static bool DenyDueToNoData(List<Figure> figures)
+        {
+            if (figures.Count != 0) return false;
+
+            Console.Clear();
+            Console.WriteLine("Сначала добавьте хотя бы одну фигуру!");
+            Console.WriteLine("Нажмите любую клавишу чтобы вернуться в главное меню");
+            Console.ReadKey();
+            return true;
+
+        }
+
         private static void PrintAllFigures(List<Figure> figures)
         {
             Console.WriteLine("Список фигур:"); 
@@ -831,16 +836,9 @@ namespace trpo_lw3
 
         private static void HandleSorting(List<Figure> figures)
         {
+            if (DenyDueToNoData(figures)) return;
+            
             Console.Clear();
-
-            if (figures.Count == 0)
-            {
-                Console.WriteLine("Сначала добавьте хотя бы одну фигуру!");
-                Console.WriteLine("Нажмите любую клавишу чтобы вернуться в главное меню");
-                Console.ReadKey();
-                return;
-            }
-
             FigureComparer figureComparer = new FigureComparer() {};
 
             Console.WriteLine("Выберите тип сортировки:");
@@ -869,7 +867,31 @@ namespace trpo_lw3
 
         private static void HandleCounting(List<Figure> figures)
         {
-            throw new NotImplementedException();
+            if (DenyDueToNoData(figures)) return;
+
+            Console.Clear();
+            
+            int numOfFigures = figures.Count();
+            int numOf2dFigures = figures.Count(el => el is Shape2D);
+            int numOf3dFigures = figures.Count(el => el is Shape3D);
+            var groupedFigures = figures.GroupBy(el => el.GetType().Name).Select(group =>
+                new
+                {
+                    Type = group.Key,
+                    NumOfFigures = group.Count()
+                });
+
+            Console.WriteLine($"Всего фигур - {numOfFigures}, из них:");
+            Console.WriteLine($"2D фигур - {numOf2dFigures}");
+            Console.WriteLine($"3D фигур - {numOf3dFigures}");
+
+            Console.WriteLine("\nКоличество конкретных фигур:");
+            foreach (var group in groupedFigures)
+            {
+                Console.WriteLine($"{group.Type} - {group.NumOfFigures}");
+            }
+            Console.WriteLine("\nНажмите любую клавишу чтобы вернуться в главное меню");
+            Console.ReadKey();
         }
 
         private static void HandleSearching(List<Figure> figures)
