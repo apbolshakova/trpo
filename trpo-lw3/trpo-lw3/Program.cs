@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace trpo_lw3
 {
@@ -827,7 +824,13 @@ namespace trpo_lw3
 
         private static void PrintAllFigures(List<Figure> figures)
         {
-            Console.WriteLine("Список фигур:"); 
+            Console.WriteLine("Список фигур:");
+
+            if (figures.Count == 0)
+            {
+                Console.WriteLine("Не найдено ни одной фигуры!");
+            }
+
             foreach (Figure figure in figures)
             {
                 Console.WriteLine($"{figure.Name} ({figure.Color} {figure.GetType().Name})");
@@ -896,7 +899,91 @@ namespace trpo_lw3
 
         private static void HandleSearching(List<Figure> figures)
         {
-            throw new NotImplementedException();
+            if (DenyDueToNoData(figures)) return;
+
+            Console.Clear();
+            Console.WriteLine("Выберите тип поиска:");
+            Console.WriteLine("1 - Фигуры определённого цвета (поиск по полю)");
+            Console.WriteLine("2 - Фигуры, площадь которых меньше значения (поиск по условию)");
+            Console.WriteLine("3 - Фигуры с наименьшей площадью (поиск минимума)");
+            Console.WriteLine("Любая другая клавиша - Отменить поиск");
+
+            List<Figure> result;
+            switch (char.ToLower(Console.ReadKey(true).KeyChar))
+            {
+                case '1':
+                    result = FindByColor(figures);
+                    break;
+                case '2':
+                    result = FindByAreaRange(figures);
+                    break;
+                case '3':
+                    result = FindBySmallestArea(figures);
+                    break;
+                default:
+                    return;
+            }
+
+            Console.Write("\nРезультат поиска - ");
+            PrintAllFigures(result);
+
+            Console.WriteLine("\nНажмите любую клавишу чтобы вернуться в главное меню");
+            Console.ReadKey();
+        }
+
+        private static List<Figure> FindByColor(List<Figure> figures)
+        {
+            string color = GetColorForSearch();
+            return figures.Where(figure => figure.Color == color).ToList();
+        }
+
+        private static string GetColorForSearch()
+        {
+            Console.WriteLine("\nВыберите цвет для поиска фигур такого цветв:");
+            Console.WriteLine("1 - Красный");
+            Console.WriteLine("2 - Зелёный");
+            Console.WriteLine("3 - Синий");
+            string color = "";
+            while (string.IsNullOrEmpty(color))
+            {
+                switch (char.ToLower(Console.ReadKey(true).KeyChar))
+                {
+                    case '1':
+                        color = "Red";
+                        break;
+                    case '2':
+                        color = "Green";
+                        break;
+                    case '3':
+                        color = "Blue";
+                        break;
+                }
+            }
+
+            return color;
+        }
+
+        private static List<Figure> FindByAreaRange(List<Figure> figures)
+        {
+            double maxArea = GetAreaForSearch();
+            return figures.Where(figure => figure.GetArea() < maxArea).ToList();
+        }
+
+        private static double GetAreaForSearch()
+        {
+            Console.WriteLine("\nВведите максимальную площадь (будут найдены фигуры с площадью, меньше данной):");
+            double side;
+            while (!double.TryParse(Console.ReadLine(), out side) || side <= 0)
+            {
+                Console.WriteLine("Площадь должна быть положительным числом!");
+            }
+
+            return side;
+        }
+
+        private static List<Figure> FindBySmallestArea(List<Figure> figures)
+        {
+            return figures.Where(figure => Math.Abs(figure.GetArea() - figures.Min(el => el.GetArea())) < 0.0000001).ToList();
         }
 
         private static void HandleSummation(List<Figure> figures)
