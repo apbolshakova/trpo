@@ -587,18 +587,21 @@ namespace trpo_lw3
                         HandleCreation(figures);
                         break;
                     case '2':
-                        HandleInfoPrinting(figures);
+                        HandleDeleting(figures);
                         break;
                     case '3':
-                        HandleSorting(figures);
+                        HandleInfoPrinting(figures);
                         break;
                     case '4':
-                        HandleCounting(figures);
+                        HandleSorting(figures);
                         break;
                     case '5':
-                        HandleSearching(figures);
+                        HandleCounting(figures);
                         break;
                     case '6':
+                        HandleSearching(figures);
+                        break;
+                    case '7':
                         HandleSummation(figures);
                         break;
                     case '0':
@@ -613,11 +616,12 @@ namespace trpo_lw3
             Console.WriteLine("Работа с фигурами");
             Console.WriteLine("-------------------------------");
             Console.WriteLine("1 – Создать фигуру");
-            Console.WriteLine("2 – Посмотреть информацию о фигурах");
-            Console.WriteLine("3 - Сортировка фигур");
-            Console.WriteLine("4 - Подсчёт количества фигур");
-            Console.WriteLine("5 - Поиск среди фигур");
-            Console.WriteLine("6 - Подсчёт суммы площадей фигур");
+            Console.WriteLine("2 - Удалить фигуру");
+            Console.WriteLine("3 – Посмотреть информацию о фигурах");
+            Console.WriteLine("4 - Сортировка фигур");
+            Console.WriteLine("5 - Подсчёт количества фигур");
+            Console.WriteLine("6 - Поиск среди фигур");
+            Console.WriteLine("7 - Подсчёт суммы площадей фигур");
             Console.WriteLine("0 - Выход");
             Console.WriteLine("-------------------------------");
         }
@@ -788,6 +792,29 @@ namespace trpo_lw3
 
             return radius;
         }
+
+        private static void HandleDeleting(List<Figure> figures)
+        {
+            if (DenyDueToNoData(figures)) return;
+
+            do
+            {
+                Console.Clear();
+                PrintAllFigures(figures);
+                Console.WriteLine("\nВводите названия фигур для удаления или пустую строку для возврата в главное меню:");
+
+                string name = Console.ReadLine();
+                if (string.IsNullOrEmpty(name)) return;
+
+                if (!figures.Exists(el => el.Name == name)) Console.WriteLine("Такой фигуры не существует!");
+                else
+                {
+                    figures.Remove(figures.Find(el => el.Name == name));
+                };
+                Console.WriteLine();
+            } while (true);
+        }
+
 
         private static void HandleInfoPrinting(List<Figure> figures)
         {
@@ -988,7 +1015,14 @@ namespace trpo_lw3
 
         private static void HandleSummation(List<Figure> figures)
         {
-            throw new NotImplementedException();
+            if(DenyDueToNoData(figures)) return;
+
+            double sum = figures.Sum(el => el.GetArea());
+            Console.Clear();
+            Console.WriteLine($"Сумма площадей всех фигур: {sum}");
+
+            Console.WriteLine("\nНажмите любую клавишу чтобы вернуться в главное меню");
+            Console.ReadKey();
         }
     }
 }
