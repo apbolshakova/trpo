@@ -30,12 +30,12 @@ namespace trpo_lw4
         private void InitializeComponent()
         {
             this.btPixel = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btParams = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
+            this.btMove = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -48,14 +48,14 @@ namespace trpo_lw4
             this.btPixel.Text = "Точки";
             this.btPixel.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btParams
             // 
-            this.button2.Location = new System.Drawing.Point(12, 48);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(121, 30);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Параметры";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btParams.Location = new System.Drawing.Point(12, 48);
+            this.btParams.Name = "btParams";
+            this.btParams.Size = new System.Drawing.Size(121, 30);
+            this.btParams.TabIndex = 1;
+            this.btParams.Text = "Параметры";
+            this.btParams.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
@@ -93,14 +93,14 @@ namespace trpo_lw4
             this.button6.Text = "Заполненная";
             this.button6.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // btMove
             // 
-            this.button7.Location = new System.Drawing.Point(12, 228);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(121, 30);
-            this.button7.TabIndex = 6;
-            this.button7.Text = "Движение";
-            this.button7.UseVisualStyleBackColor = true;
+            this.btMove.Location = new System.Drawing.Point(12, 228);
+            this.btMove.Name = "btMove";
+            this.btMove.Size = new System.Drawing.Size(121, 30);
+            this.btMove.TabIndex = 6;
+            this.btMove.Text = "Движение";
+            this.btMove.UseVisualStyleBackColor = true;
             // 
             // button8
             // 
@@ -117,12 +117,12 @@ namespace trpo_lw4
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(968, 503);
             this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
+            this.Controls.Add(this.btMove);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btParams);
             this.Controls.Add(this.btPixel);
             this.Name = "Form1";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -134,12 +134,12 @@ namespace trpo_lw4
         #endregion
 
         private System.Windows.Forms.Button btPixel;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btParams;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button btMove;
         private System.Windows.Forms.Button button8;
     }
 }

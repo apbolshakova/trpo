@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace trpo_lw4
@@ -152,7 +147,10 @@ namespace trpo_lw4
         }
         void ShowPoints(Graphics g)
         {
+            SolidBrush br = new SolidBrush(lineColor);
 
+            foreach (Point point in arPoints)
+                g.FillEllipse(br, point.X, point.Y, PointRadius, PointRadius);
         }
         void ShowLine(Graphics g, LineType lt)
         {
