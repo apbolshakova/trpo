@@ -36,7 +36,7 @@ namespace trpo_lw4
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.btMove = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
+            this.btClear = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btPixel
@@ -65,6 +65,7 @@ namespace trpo_lw4
             this.button3.TabIndex = 2;
             this.button3.Text = "Кривая";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.btCurve_Click);
             // 
             // button4
             // 
@@ -74,6 +75,7 @@ namespace trpo_lw4
             this.button4.TabIndex = 3;
             this.button4.Text = "Ломанная";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.btPolygone_Click);
             // 
             // button5
             // 
@@ -83,6 +85,7 @@ namespace trpo_lw4
             this.button5.TabIndex = 4;
             this.button5.Text = "Безье";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.btBezier_Click);
             // 
             // button6
             // 
@@ -92,6 +95,7 @@ namespace trpo_lw4
             this.button6.TabIndex = 5;
             this.button6.Text = "Заполненная";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.btFilledCurve_Click);
             // 
             // btMove
             // 
@@ -102,21 +106,22 @@ namespace trpo_lw4
             this.btMove.Text = "Движение";
             this.btMove.UseVisualStyleBackColor = true;
             // 
-            // button8
+            // btClear
             // 
-            this.button8.Location = new System.Drawing.Point(12, 264);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(121, 30);
-            this.button8.TabIndex = 7;
-            this.button8.Text = "Очистить";
-            this.button8.UseVisualStyleBackColor = true;
+            this.btClear.Location = new System.Drawing.Point(12, 264);
+            this.btClear.Name = "btClear";
+            this.btClear.Size = new System.Drawing.Size(121, 30);
+            this.btClear.TabIndex = 7;
+            this.btClear.Text = "Очистить";
+            this.btClear.UseVisualStyleBackColor = true;
+            this.btClear.Click += new System.EventHandler(this.btClear_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(968, 503);
-            this.Controls.Add(this.button8);
+            this.Controls.Add(this.btClear);
             this.Controls.Add(this.btMove);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
@@ -140,6 +145,6 @@ namespace trpo_lw4
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button btMove;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button btClear;
     }
 }

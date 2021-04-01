@@ -10,11 +10,9 @@ namespace trpo_lw4
     public partial class Form1 : Form
     {
         private Timer moveTimer = new Timer();
-        private Timer myTimer = new Timer();
 
         private bool bPixel;
         private bool bMove;
-        private bool bSameDirectionToMove;
 
         enum LineType
         {
@@ -24,19 +22,19 @@ namespace trpo_lw4
             Polygone,
             FilledCurve
         };
-
-        private bool bShowLine;
-        private LineType LineTypeToShow;
+        
+        private LineType LineTypeToShow = LineType.None;
         private List<Point> arPoints = new List<Point>();
-        private List<Point> arOffsets = new List<Point>();
+        private int[] arOffsets = {1, 1};
 
-        public float PointRadius { get; set; } = 5;
-        public Size PointSize { get; set; } = new Size(5, 5);
+        public float PointRadius { get; set; } = 15;
         private Color pointColor { get; set; } = Color.DarkMagenta;
         public Color lineColor { get; set; } = Color.PaleVioletRed;
 
-        private int lineWidth;
-        private int curveTension;
+        private int lineWidth = 3;
+        private int curveTension = 3;
+        private int pointsSpeed = 10;
+        private int[] extraSpeed = {5, 0};
 
         private bool bDrag;
         private int iPointToDrag;
@@ -52,39 +50,69 @@ namespace trpo_lw4
             this.Text = $"Вариант {variant}"; // Вариант 5
             this.MinimumSize = new Size(400, 400);
 
-            pointColor = Color.DarkBlue;
-            lineColor = Color.DarkBlue;
-            lineWidth = 4;
-            curveTension = 2;
-            bSameDirectionToMove = true;
-
             // КНОПКИ
-            btPixel.Click += new EventHandler(btPixel_Click);
-            btParams.Click += new EventHandler(btParams_Click);
-            btMove.Click += new EventHandler(btMove_Click);
+            btPixel.Click += btPixel_Click;
+            btParams.Click += btParams_Click;
+            btMove.Click += btMove_Click;
 
             DoubleBuffered = true;
 
             // ОБРАБОТЧИКИ ФОРМЫ
-            MouseClick += new MouseEventHandler(Form1_MouseClick);
-            MouseDown += new MouseEventHandler(Form1_MouseDown);
-            MouseMove += new MouseEventHandler(Form1_MouseMove);
-            MouseUp += new MouseEventHandler(Form1_MouseUp);
+            MouseClick += Form1_MouseClick;
+            MouseDown += Form1_MouseDown;
+            MouseMove += Form1_MouseMove;
+            MouseUp += Form1_MouseUp;
 
-            Paint += new PaintEventHandler(Form1_Paint);
+            Paint += Form1_Paint;
 
             moveTimer.Interval = 30;
-            moveTimer.Tick += new EventHandler(TimerTickHandler);
+            moveTimer.Tick += TimerTickHandler;
+
+            KeyPreview = true;
+            KeyDown += Form1_KeyDown;
+
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            switch (msg.WParam.ToInt32())
+            {
+                case (38):
+                    extraSpeed[1] -= 5;
+                    break;
+                case (40):
+                    extraSpeed[1] += 5;
+                    break;
+                case (39):
+                    extraSpeed[0] += 5;
+                    break;
+                case (37):
+                    extraSpeed[0] -= 5;
+                    break;
+                case (187):
+                    pointsSpeed += 5;
+                    break;
+                case (189):
+                    pointsSpeed -= 5;
+                    break;
+            }
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
         void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            switch (e.KeyCode)
+            {
+                case (Keys.Space):
+                    (Controls["btMove"] as Button)?.PerformClick();
+                    break;
+                case (Keys.Escape):
+                    (Controls["btClear"] as Button)?.PerformClick();
+                    break;
+            }
 
+            e.Handled = true;
         }
         void Form1_MouseClick(object sender, MouseEventArgs e)
         {
@@ -120,19 +148,16 @@ namespace trpo_lw4
         }
         bool IsOnPoint(Point pPixel, Point pMouse)
         {
-            if ((pMouse.X >= pPixel.X - PointSize.Width / 2 &&
-                 pMouse.X <= pPixel.X + PointSize.Width / 2) &&
-                (pMouse.Y >= pPixel.Y - PointSize.Height / 2 &&
-                 pMouse.Y <= pPixel.Y + PointSize.Height / 2))
+            if ((pMouse.X >= pPixel.X - PointRadius / 2) &&
+                (pMouse.X <= pPixel.X + PointRadius / 2) &&
+                (pMouse.Y >= pPixel.Y - PointRadius / 2) &&
+                (pMouse.Y <= pPixel.Y + PointRadius / 2))
                 return true;
-            else
-                return false;
+
+            return false;
         }
 
-        void ShowMousePosition(object sender, PaintEventArgs e)
-        {
 
-        }
         void Form1_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -147,10 +172,10 @@ namespace trpo_lw4
         }
         void ShowPoints(Graphics g)
         {
-            SolidBrush br = new SolidBrush(lineColor);
+            SolidBrush br = new SolidBrush(pointColor);
 
             foreach (Point point in arPoints)
-                g.FillEllipse(br, point.X, point.Y, PointRadius, PointRadius);
+                g.FillEllipse(br, point.X - PointRadius / 2, point.Y - PointRadius / 2, PointRadius, PointRadius);
         }
         void ShowLine(Graphics g, LineType lt)
         {
@@ -170,8 +195,6 @@ namespace trpo_lw4
                 case (LineType.FilledCurve):
                     g.FillClosedCurve(br, arPoints.ToArray());
                     break;
-                default:
-                    break;
             }
             br.Dispose();
             pen.Dispose();
@@ -184,27 +207,49 @@ namespace trpo_lw4
 
         void MovePoints()
         {
-            int _x, _y;
+            int _x = 0, _y = 0;
+            bool revertX = false;
+            bool revertY = false;
 
             // Сбрасываем режим "Точки"
             if (bPixel)
-                (this.Controls["btPixel"] as Button).PerformClick();
+                (Controls["btPixel"] as Button)?.PerformClick();
 
             for (int i = 0; i < arPoints.Count; i++)
             {
-                _x = arPoints[i].X + arOffsets[i].X;
+                _x = arPoints[i].X + arOffsets[0] * pointsSpeed + extraSpeed[0];
                 if (_x >= this.ClientRectangle.Width || _x <= 0)
                 {
-                    arOffsets[i] = new Point(-arOffsets[i].X, arOffsets[i].Y);
-                    _x = arPoints[i].X + arOffsets[i].X;
+                    revertX = true;
                 }
 
-                _y = arPoints[i].Y + arOffsets[i].Y;
+                _y = arPoints[i].Y + arOffsets[1] * pointsSpeed + extraSpeed[1];
                 if (_y >= this.ClientRectangle.Height || _y <= 0)
                 {
-                    arOffsets[i] = new Point(arOffsets[i].X, -arOffsets[i].Y);
-                    _y = arPoints[i].Y + arOffsets[i].Y;
+                    revertY = true;
                 }
+            }
+
+            if (revertX)
+            {
+                arOffsets[0] = -arOffsets[0];
+            }
+            if (revertY)
+            {
+                arOffsets[1] = -arOffsets[1];
+            }
+
+            for (int i = 0; i < arPoints.Count; i++)
+            {
+                if (revertX) 
+                    _x = arPoints[i].X + arOffsets[0] * (pointsSpeed + extraSpeed[0]);
+                else
+                    _x = arPoints[i].X + arOffsets[0] * pointsSpeed + extraSpeed[0];
+
+                if (revertY)
+                    _y = arPoints[i].Y + arOffsets[1] * (pointsSpeed + extraSpeed[1]);
+                else
+                     _y = arPoints[i].Y + arOffsets[1] * pointsSpeed + extraSpeed[1];
 
                 arPoints[i] = new Point(_x, _y);
             }
@@ -222,7 +267,7 @@ namespace trpo_lw4
             }
             else
             {
-                b.BackColor = Button.DefaultBackColor;
+                b.BackColor = DefaultBackColor;
             }
         }
         void btCurve_Click(object sender, EventArgs e)
@@ -279,24 +324,7 @@ namespace trpo_lw4
 
             if (bMove)
             {
-                arOffsets = new List<Point>();
-                int _x = 0, _y = 0;
-                Random r = new Random((int) DateTime.Now.Ticks);
-                if (bSameDirectionToMove)
-                {
-                    _x = r.Next(0, 10);
-                    _y = r.Next(0, 10);
-                }
-
-                for (int i = 0; i < arPoints.Count; i++)
-                {
-                    if (!bSameDirectionToMove)
-                    {
-                        _x = r.Next(0, 10);
-                        _y = r.Next(0, 10);
-                    }
-                    arOffsets.Add(new Point(_x, _y));
-                }
+                extraSpeed = new[] {0, 0};
                 moveTimer.Start();
             }
             else
