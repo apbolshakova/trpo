@@ -29,55 +29,68 @@ namespace trpo_lw4
         /// </summary>
         private void InitializeComponent()
         {
-            this.btUpdate = new System.Windows.Forms.Button();
-            this.ptSizeUpDown = new System.Windows.Forms.NumericUpDown();
-            this.cmbColors = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.ptSizeUpDown)).BeginInit();
+            this.lineUpDown = new System.Windows.Forms.NumericUpDown();
+            this.pointUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.lineUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pointUpDown)).BeginInit();
             this.SuspendLayout();
             // 
-            // btUpdate
+            // lineUpDown
             // 
-            this.btUpdate.Location = new System.Drawing.Point(74, 340);
-            this.btUpdate.Name = "btUpdate";
-            this.btUpdate.Size = new System.Drawing.Size(75, 23);
-            this.btUpdate.TabIndex = 0;
-            this.btUpdate.Text = "btUpdate";
-            this.btUpdate.UseVisualStyleBackColor = true;
+            this.lineUpDown.Location = new System.Drawing.Point(197, 34);
+            this.lineUpDown.Name = "lineUpDown";
+            this.lineUpDown.Size = new System.Drawing.Size(150, 22);
+            this.lineUpDown.TabIndex = 1;
             // 
-            // ptSizeUpDown
+            // pointUpDown
             // 
-            this.ptSizeUpDown.Location = new System.Drawing.Point(74, 261);
-            this.ptSizeUpDown.Name = "ptSizeUpDown";
-            this.ptSizeUpDown.Size = new System.Drawing.Size(120, 22);
-            this.ptSizeUpDown.TabIndex = 1;
+            this.pointUpDown.Location = new System.Drawing.Point(197, 94);
+            this.pointUpDown.Name = "pointUpDown";
+            this.pointUpDown.Size = new System.Drawing.Size(150, 22);
+            this.pointUpDown.TabIndex = 2;
             // 
-            // cmbColors
+            // label1
             // 
-            this.cmbColors.FormattingEnabled = true;
-            this.cmbColors.Location = new System.Drawing.Point(73, 189);
-            this.cmbColors.Name = "cmbColors";
-            this.cmbColors.Size = new System.Drawing.Size(121, 24);
-            this.cmbColors.TabIndex = 2;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(32, 36);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(118, 17);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Толщина кривой";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(32, 94);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(97, 17);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Радиус точки";
             // 
             // ParamForms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.cmbColors);
-            this.Controls.Add(this.ptSizeUpDown);
-            this.Controls.Add(this.btUpdate);
+            this.ClientSize = new System.Drawing.Size(359, 149);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.pointUpDown);
+            this.Controls.Add(this.lineUpDown);
             this.Name = "ParamForms";
             this.Text = "ParamForms";
-            ((System.ComponentModel.ISupportInitialize)(this.ptSizeUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lineUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pointUpDown)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btUpdate;
-        private System.Windows.Forms.NumericUpDown ptSizeUpDown;
-        private System.Windows.Forms.ComboBox cmbColors;
+        private System.Windows.Forms.NumericUpDown lineUpDown;
+        private System.Windows.Forms.NumericUpDown pointUpDown;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }

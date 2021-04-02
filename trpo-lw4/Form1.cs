@@ -27,11 +27,11 @@ namespace trpo_lw4
         private List<Point> arPoints = new List<Point>();
         private int[] arOffsets = {1, 1};
 
-        public float PointRadius { get; set; } = 15;
+        public int PointRadius { get; set; } = 15;
         private Color pointColor { get; set; } = Color.DarkMagenta;
-        public Color lineColor { get; set; } = Color.PaleVioletRed;
+        private Color lineColor { get; set; } = Color.PaleVioletRed;
 
-        private int lineWidth = 3;
+        public int lineWidth = 3;
         private int curveTension = 3;
         private int pointsSpeed = 10;
         private int[] extraSpeed = {5, 0};
@@ -75,26 +75,29 @@ namespace trpo_lw4
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            switch (msg.WParam.ToInt32())
+            if (bMove)
             {
-                case (38):
-                    extraSpeed[1] -= 5;
-                    break;
-                case (40):
-                    extraSpeed[1] += 5;
-                    break;
-                case (39):
-                    extraSpeed[0] += 5;
-                    break;
-                case (37):
-                    extraSpeed[0] -= 5;
-                    break;
-                case (187):
-                    pointsSpeed += 5;
-                    break;
-                case (189):
-                    pointsSpeed -= 5;
-                    break;
+                switch (msg.WParam.ToInt32())
+                {
+                    case (38):
+                        extraSpeed[1] -= 5;
+                        break;
+                    case (40):
+                        extraSpeed[1] += 5;
+                        break;
+                    case (39):
+                        extraSpeed[0] += 5;
+                        break;
+                    case (37):
+                        extraSpeed[0] -= 5;
+                        break;
+                    case (187):
+                        pointsSpeed += 5;
+                        break;
+                    case (189):
+                        pointsSpeed -= 5;
+                        break;
+                }
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
