@@ -31,10 +31,10 @@ namespace trpo_lw4
         {
             this.btPixel = new System.Windows.Forms.Button();
             this.btParams = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
+            this.btCurve = new System.Windows.Forms.Button();
+            this.btPolygone = new System.Windows.Forms.Button();
+            this.btBezier = new System.Windows.Forms.Button();
+            this.btFilledCurve = new System.Windows.Forms.Button();
             this.btMove = new System.Windows.Forms.Button();
             this.btClear = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -57,45 +57,45 @@ namespace trpo_lw4
             this.btParams.Text = "Параметры";
             this.btParams.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btCurve
             // 
-            this.button3.Location = new System.Drawing.Point(12, 84);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(121, 30);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Кривая";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.btCurve_Click);
+            this.btCurve.Location = new System.Drawing.Point(12, 84);
+            this.btCurve.Name = "btCurve";
+            this.btCurve.Size = new System.Drawing.Size(121, 30);
+            this.btCurve.TabIndex = 2;
+            this.btCurve.Text = "Кривая";
+            this.btCurve.UseVisualStyleBackColor = true;
+            this.btCurve.Click += new System.EventHandler(this.btCurve_Click);
             // 
-            // button4
+            // btPolygone
             // 
-            this.button4.Location = new System.Drawing.Point(12, 120);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(121, 30);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Ломанная";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.btPolygone_Click);
+            this.btPolygone.Location = new System.Drawing.Point(12, 120);
+            this.btPolygone.Name = "btPolygone";
+            this.btPolygone.Size = new System.Drawing.Size(121, 30);
+            this.btPolygone.TabIndex = 3;
+            this.btPolygone.Text = "Ломанная";
+            this.btPolygone.UseVisualStyleBackColor = true;
+            this.btPolygone.Click += new System.EventHandler(this.btPolygone_Click);
             // 
-            // button5
+            // btBezier
             // 
-            this.button5.Location = new System.Drawing.Point(12, 156);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(121, 30);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "Безье";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.btBezier_Click);
+            this.btBezier.Location = new System.Drawing.Point(12, 156);
+            this.btBezier.Name = "btBezier";
+            this.btBezier.Size = new System.Drawing.Size(121, 30);
+            this.btBezier.TabIndex = 4;
+            this.btBezier.Text = "Безье";
+            this.btBezier.UseVisualStyleBackColor = true;
+            this.btBezier.Click += new System.EventHandler(this.btBezier_Click);
             // 
-            // button6
+            // btFilledCurve
             // 
-            this.button6.Location = new System.Drawing.Point(12, 192);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(121, 30);
-            this.button6.TabIndex = 5;
-            this.button6.Text = "Заполненная";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.btFilledCurve_Click);
+            this.btFilledCurve.Location = new System.Drawing.Point(12, 192);
+            this.btFilledCurve.Name = "btFilledCurve";
+            this.btFilledCurve.Size = new System.Drawing.Size(121, 30);
+            this.btFilledCurve.TabIndex = 5;
+            this.btFilledCurve.Text = "Заполненная";
+            this.btFilledCurve.UseVisualStyleBackColor = true;
+            this.btFilledCurve.Click += new System.EventHandler(this.btFilledCurve_Click);
             // 
             // btMove
             // 
@@ -123,10 +123,10 @@ namespace trpo_lw4
             this.ClientSize = new System.Drawing.Size(968, 503);
             this.Controls.Add(this.btClear);
             this.Controls.Add(this.btMove);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.btFilledCurve);
+            this.Controls.Add(this.btBezier);
+            this.Controls.Add(this.btPolygone);
+            this.Controls.Add(this.btCurve);
             this.Controls.Add(this.btParams);
             this.Controls.Add(this.btPixel);
             this.Name = "Form1";
@@ -140,10 +140,10 @@ namespace trpo_lw4
 
         private System.Windows.Forms.Button btPixel;
         private System.Windows.Forms.Button btParams;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button btCurve;
+        private System.Windows.Forms.Button btPolygone;
+        private System.Windows.Forms.Button btBezier;
+        private System.Windows.Forms.Button btFilledCurve;
         private System.Windows.Forms.Button btMove;
         private System.Windows.Forms.Button btClear;
     }

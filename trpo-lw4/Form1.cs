@@ -50,6 +50,15 @@ namespace trpo_lw4
             this.Text = $"Вариант {variant}"; // Вариант 5
             this.MinimumSize = new Size(400, 400);
 
+            btParams.Enabled = false;
+            btMove.Enabled = false;
+            btClear.Enabled = false;
+            btCurve.Enabled = false;
+            btPolygone.Enabled = false;
+            btBezier.Enabled = false;
+            btFilledCurve.Enabled = false;
+            btBezier.Enabled = false;
+
             // КНОПКИ
             btPixel.Click += btPixel_Click;
             btParams.Click += btParams_Click;
@@ -120,11 +129,40 @@ namespace trpo_lw4
         void Form1_MouseClick(object sender, MouseEventArgs e)
         {
             Point p = e.Location;
-            if (bPixel)
+            if (bPixel && !bDrag)
             {
-                arPoints.Add(p);
-                LineTypeToShow = LineType.None;
-                Refresh();
+                if (p.X > 140 || p.Y > 300)
+                {
+                    arPoints.Add(p);
+                    LineTypeToShow = LineType.None;
+                    Refresh();
+                    if (arPoints.Count > 0)
+                    {
+                        btParams.Enabled = true;
+                        btMove.Enabled = true;
+                        btClear.Enabled = true;
+                    }
+                    if (arPoints.Count > 1)
+                    {
+                        btCurve.Enabled = true;
+                        btPolygone.Enabled = true;
+                        btBezier.Enabled = true;
+
+                    }
+                    if (arPoints.Count > 2)
+                    {
+                        btFilledCurve.Enabled = true;
+                    }
+
+                    if (arPoints.Count == 4)
+                    {
+                        btBezier.Enabled = true;
+                    }
+                    else
+                    {
+                        btBezier.Enabled = false;
+                    }
+                }
             }
         }
         void Form1_MouseUp(object sender, MouseEventArgs e)
@@ -133,7 +171,9 @@ namespace trpo_lw4
         }
         void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (bDrag)
+            if (bDrag && (e.Location.X > 100 || e.Location.Y > 250) 
+                      && (e.Location.X <= this.ClientRectangle.Width && e.Location.X >= 0)
+                      && (e.Location.Y <=  this.ClientRectangle.Height && e.Location.Y >= 0))
             {
                 arPoints[iPointToDrag] = new Point(e.Location.X, e.Location.Y);
                 Refresh();
@@ -159,7 +199,6 @@ namespace trpo_lw4
 
             return false;
         }
-
 
         void Form1_Paint(object sender, PaintEventArgs e)
         {
@@ -221,13 +260,13 @@ namespace trpo_lw4
             for (int i = 0; i < arPoints.Count; i++)
             {
                 _x = arPoints[i].X + arOffsets[0] * pointsSpeed + extraSpeed[0];
-                if (_x >= this.ClientRectangle.Width || _x <= 0)
+                if (_x >= this.ClientRectangle.Width || _x <= 0 || (_x < 100 && _y < 250))
                 {
                     revertX = true;
                 }
 
                 _y = arPoints[i].Y + arOffsets[1] * pointsSpeed + extraSpeed[1];
-                if (_y >= this.ClientRectangle.Height || _y <= 0)
+                if (_y >= this.ClientRectangle.Height || _y <= 0 || (_x < 100 && _y < 250))
                 {
                     revertY = true;
                 }
@@ -264,8 +303,6 @@ namespace trpo_lw4
             Button b = (Button) sender;
             if (bPixel)
             {
-                LineTypeToShow = LineType.None;
-                arPoints = new List<Point>();
                 b.BackColor = Color.LightBlue;
             }
             else
@@ -338,10 +375,21 @@ namespace trpo_lw4
         void btClear_Click(object sender, EventArgs e)
         {
             arPoints = new List<Point>();
+
+            btParams.Enabled = false;
+            btMove.Enabled = false;
+            btClear.Enabled = false;
+            btCurve.Enabled = false;
+            btPolygone.Enabled = false;
+            btBezier.Enabled = false;
+            btFilledCurve.Enabled = false;
+            btBezier.Enabled = false;
+
             LineTypeToShow = LineType.None;
             if (bMove)
                 Controls.OfType<Button>().First(b => b.Name == "btMove").PerformClick();
-            bPixel = false;
+            if (bPixel)
+                Controls.OfType<Button>().First(b => b.Name == "btPixel").PerformClick();
             bDrag = false;
             Refresh();
         }
