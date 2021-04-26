@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:trpo_lw6"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Альпининстские маршруты" Height="475" Width="700">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="100"></ColumnDefinition>
@@ -13,19 +13,27 @@
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Column="0">
-            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" >
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center" >
                 <StackPanel.Resources>
                     <Style TargetType="Button">
-                        <Setter Property="Width" Value="60" />
-                        <Setter Property="Height" Value="60" />
+                        <Setter Property="Width" Value="70" />
+                        <Setter Property="Height" Value="30" />
+                        <Setter Property="Margin" Value="5" />
                         <Setter Property="Background" Value="LightBlue" />
                     </Style>
                 </StackPanel.Resources>
-                <Button Command="{Binding AddCommand}">+</Button>
-                <Button Command="{Binding DeleteCommand}"
-                        CommandParameter="{Binding SelectedRoute}">-</Button>
-                <Button Command="{Binding SaveCommand}">Сохранить</Button>
-                <Button Command="{Binding LoadCommand}">Загрузить</Button>
+                <Button ToolTipService.ShowOnDisabled="True" ToolTip="Добавление маршрута недоступно при некорректных данных в текущем маршруте" 
+                        Command="{Binding AddCommand}"
+                        x:Name="AddBtn">+</Button>
+                <Button ToolTipService.ShowOnDisabled="True" ToolTip="Удаление маршрута недоступно при некорректных данных в текущем маршруте, или если маршрутов нет" 
+                        Command="{Binding DeleteCommand}"
+                        CommandParameter="{Binding SelectedRoute}"
+                        x:Name="DeleteBtn">-</Button>
+                <Button ToolTipService.ShowOnDisabled="True" ToolTip="Сохранение маршрутов недоступно при некорректных данных в текущем маршруте, или если маршрутов нет" 
+                         Command="{Binding SaveCommand}"
+                         x:Name="SaveBtn">Сохранить</Button>
+                <Button 
+                        Command="{Binding LoadCommand}">Загрузить</Button>
             </StackPanel>
 
             <ListBox ItemsSource="{Binding Routes}"
@@ -34,22 +42,33 @@
                     <DataTemplate>
                         <StackPanel Margin="5">
                             <TextBlock FontSize="18" Text="{Binding Path=Name}" />
-                            <TextBlock Text="{Binding Path=Description}" />
                             <TextBlock Text="{Binding Path=Peak}" />
+                            <TextBlock Text="{Binding Path=Height}" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </DockPanel>
 
-        <StackPanel Grid.Column="1" DataContext="{Binding SelectedRoute}">
-            <TextBlock Text="Выбранный элемент"  />
-            <TextBlock Text="Модель" />
+        <StackPanel Margin="5" Grid.Column="1" DataContext="{Binding SelectedRoute}">
+            <StackPanel.Resources>
+                <Style TargetType="TextBox">
+                    <Setter Property="Height" Value="40" />
+                    <Setter Property="Margin" Value="0, 10" />
+                    <Setter Property="Background" Value="OldLace" />
+                    <Setter Property="TextWrapping" Value="Wrap" />
+                </Style>
+            </StackPanel.Resources>
+
+            <TextBlock TextAlignment="Center" Text="Выбранный маршрут"  />
+            <TextBlock Text="Название" />
             <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Text="Производитель" />
-            <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Text="Цена" />
+            <TextBlock Text="Описание" />
+            <TextBox Height="70" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Text="Вершина (конечная цель)" />
             <TextBox Text="{Binding Peak, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Text="Высота вершины" />
+            <TextBox x:Name="HeightTextBox" Text="{Binding Height, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" TextChanged="HeightTextBox_TextChanged" />
         </StackPanel>
     </Grid>
 </Window>

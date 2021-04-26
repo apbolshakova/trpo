@@ -23,6 +23,7 @@ namespace trpo_lw6
             get { return selectedRoute; }
             set
             {
+                if (!SelectedRouteDataIsCorrect()) return;
                 selectedRoute = value;
                 OnPropertyChanged("SelectedRoute");
             }
@@ -75,10 +76,17 @@ namespace trpo_lw6
                 return addCommand ??
                        (addCommand = new RelayCommand(obj =>
                        {
-                           Route Route = new Route();
+                           Route Route = new Route
+                           {
+                               Name = "Новый маршрут",
+                               Description = "Описание нового маршрута",
+                               Peak = "Вершина",
+                               Height = 0
+                           };
                            Routes.Insert(0, Route);
                            SelectedRoute = Route;
-                       }));
+                       },
+                           (obj) => SelectedRouteDataIsCorrect()));
             }
         }
 
@@ -97,7 +105,7 @@ namespace trpo_lw6
                                    Routes.Remove(Route);
                                }
                            },
-                           (obj) => Routes.Count > 0));
+                           (obj) => Routes.Count > 0 && SelectedRouteDataIsCorrect()));
             }
         }
 
@@ -111,6 +119,7 @@ namespace trpo_lw6
                        (saveCommand = new RelayCommand(obj =>
                            {
                                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                               dlg.InitialDirectory = System.Environment.CurrentDirectory;
                                dlg.Filter = "json|*.json|xml|*.xml";
 
                                Nullable<bool> result = dlg.ShowDialog();
@@ -129,7 +138,7 @@ namespace trpo_lw6
                                    }
                                }
                            },
-                           (obj) => Routes.Count > 0));
+                           (obj) => Routes.Count > 0 && SelectedRouteDataIsCorrect()));
             }
         }
 
@@ -143,6 +152,7 @@ namespace trpo_lw6
                        (loadCommand = new RelayCommand(obj =>
                        {
                            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+                           dlg.InitialDirectory = System.Environment.CurrentDirectory;
                            dlg.Filter = "json|*.json|xml|*.xml";
 
                            Nullable<bool> result = dlg.ShowDialog();
@@ -203,6 +213,14 @@ namespace trpo_lw6
                     Height = int.Parse(e.Element("Height")?.Value ?? string.Empty)
                 });
             OnPropertyChanged("Routes");
+        }
+
+        private bool SelectedRouteDataIsCorrect()
+        {
+            if ((SelectedRoute is null) || (!String.IsNullOrWhiteSpace(SelectedRoute.Name) &&
+                !String.IsNullOrWhiteSpace(SelectedRoute.Description) &&
+                !String.IsNullOrWhiteSpace(SelectedRoute.Peak))) return true;
+            return false;
         }
     }
 }

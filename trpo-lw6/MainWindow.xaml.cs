@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace trpo_lw6
 {
@@ -9,6 +10,14 @@ namespace trpo_lw6
             InitializeComponent();
 
             DataContext = new AllRouteViewModel();
+        }
+
+        private void HeightTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            AddBtn.IsEnabled = Validation.GetHasError(tb) == true ? false : true;
+            DeleteBtn.IsEnabled = Validation.GetHasError(tb) == true ? false : true;
+            SaveBtn.IsEnabled = Validation.GetHasError(tb) == true ? false : true;
         }
     }
 }
