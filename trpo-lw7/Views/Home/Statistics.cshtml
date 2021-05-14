@@ -1,0 +1,64 @@
+﻿<div>
+    <h2 align="center">Статистика по данным</h2>
+    <div>
+        <h3>Общее количество объектов:</h3>
+        <p>@(ViewBag.statisticsData.NumOfTracks ?? 0) треков и @(ViewBag.statisticsData.NumOfMusicians ?? 0) музыкантов</p>
+    </div>
+    <div>
+        @if (ViewBag.statisticsData.NumOfTracksByYear != null)
+        {
+            <h3>Распределение объектов по типам (количество треков за год):</h3>
+            <table>
+                <tr>
+                    <th>Год</th>
+                    <th>Количество треков</th>
+                </tr>
+                @foreach (TracksByYear item in ViewBag.statisticsData.NumOfTracksByYear)
+                {
+                    <tr>
+                        <td>@item.Year</td>
+                        <td>@item.TrNum</td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+    <div>
+        @if (ViewBag.statisticsData.AvgDurationByGenre != null)
+       {
+           <h3>Среднее значение характеристики по типам (средняя длительность трека в каждом жанре):</h3>
+           <table>
+               <tr>
+                   <th>Жанр</th>
+                   <th>Средняя длительность треков</th>
+               </tr>
+               @foreach (AvgByGenre item in ViewBag.statisticsData.AvgDurationByGenre)
+               {
+                   <tr>
+                       <td>@item.Genre</td>
+                       <td>@item.AvgDur</td>
+                   </tr>
+               }
+           </table>
+       }
+    </div>
+    <div>
+        @if (ViewBag.statisticsData.NumOfTracksByMusician != null)
+        {
+            <h3>Подсчёт количества объектов на связанную сущность (Количество треков у каждого из музыкантов):</h3>
+            <table>
+                <tr>
+                    <th>Музыкант</th>
+                    <th>Количество треков</th>
+                </tr>
+                @foreach (TracksByMusician item in ViewBag.statisticsData.NumOfTracksByMusician)
+                {
+                    <tr>
+                        <td>@item.Mus</td>
+                        <td>@item.TrNum</td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+</div>

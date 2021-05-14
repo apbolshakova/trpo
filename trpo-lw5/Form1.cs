@@ -206,6 +206,9 @@ namespace trpo_lw5
 
         private void SaveXml(string file)
         {
+            OpenFileDialog sfd = new OpenFileDialog();
+            sfd.InitialDirectory = System.Environment.CurrentDirectory;
+            sfd.Filter = "bin|*.bin|xml|*.xml";
             XmlSerializer ser = new XmlSerializer(typeof(List<University>));
             using (Stream sw = new FileStream(file, FileMode.Create))
             {
@@ -215,9 +218,6 @@ namespace trpo_lw5
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            OpenFileDialog sfd = new OpenFileDialog();
-            sfd.InitialDirectory = System.Environment.CurrentDirectory;
-            sfd.Filter = "bin|*.bin|xml|*.xml";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 switch (sfd.FilterIndex)

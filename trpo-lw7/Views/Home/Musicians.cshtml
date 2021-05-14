@@ -1,0 +1,35 @@
+﻿@model IEnumerable<trpo_lw7.Models.Musician>;
+<div>
+    <h2 align="center">@ViewData["Title"]</h2>
+    <div class="track-list">
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Имя</th>
+                <th>Сценическое имя</th>
+                <th>Год рождения</th>
+                <th>Треки</th>
+                <th>Опции</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.StageName</td>
+                    <td>@item.BirthYear</td>
+                    <td>
+                        @foreach (Track track in item.Tracks)
+                        {
+                            <p>@track.Title</p>
+                        }
+                    </td>
+                    <td>
+                        <div>@Html.ActionLink("Изменить", "EditMusician", item)</div>
+                        <div>@Html.ActionLink("Удалить", "DeleteMusician", item)</div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

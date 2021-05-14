@@ -1,0 +1,62 @@
+﻿@model trpo_lw7.Models.Track;
+<h4>Редактирование трека</h4>
+<div class="edit-block">
+    @using (Html.BeginForm("CreateTrack", "Home"))
+    {
+        @if (Model?.Id != null)
+        {
+            <div class="dataBox">
+                <label>Id</label><br />
+                @Html.TextBoxFor(m => m.Id, new { @Value = Model.Id, @class = "text-box", @readonly = "readonly" })
+            </div>
+        }
+
+        <div class="dataBox">
+            <label>Название</label><br />
+            @Html.TextBoxFor(m => m.Title, new { @Value = Model?.Title ?? "", @class = "text-box" })
+        </div>
+        <div class="dataBox">
+            <label>Длительность в секундах</label><br />
+            @Html.TextBoxFor(m => m.DurationInSeconds, "60", new
+            {
+               @Value = Model?.DurationInSeconds ?? 0,
+               type = "number",
+               @class = "text-box"
+            })
+        </div>
+        <div class="dataBox">
+            <label>Год</label><br />
+            @Html.TextBoxFor(m => m.Year, "2020", new
+           {
+               @Value = Model?.Year ?? 2021,
+               type = "number",
+               @class = "text-box"
+           })
+        </div>
+        <div class="dataBox">
+
+            <label>Жанр</label><br/>
+            @Html.DropDownList("Genre",
+                new SelectList(System.Enum.GetNames(typeof(trpo_lw7.Models.genre)), Model?.Genre ?? genre.Chiptune))
+        </div>
+
+        @if (((List<Musician>)ViewData["Musicians"]).Count == 0)
+        {
+            <p>Вы не сможете создать трек без музыканта!</p>
+        }
+        else
+        {
+            <div class="dataBox" style="vertical-align: central">
+                <label style="vertical-align: central">Музыканты</label><br />
+                @Html.DropDownListFor(m => m.MusicianId,
+                    new SelectList((List<Musician>)ViewData["Musicians"], "Id", "Name"))
+            </div>
+            <div class="dataBox">
+                <input type="submit" value="Сохранить" />
+            </div>
+        }
+    }
+</div>
+<div>
+    <a asp-action="Index">На главную</a>
+</div>

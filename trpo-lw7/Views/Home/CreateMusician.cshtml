@@ -1,0 +1,38 @@
+﻿@model trpo_lw7.Models.Musician;
+<h4>Редактирование музыканта</h4>
+<div class="edit-block">
+    @using (Html.BeginForm("CreateMusician", "Home"))
+    {
+        @if (Model?.Id != null)
+        {
+            <div class="dataBox">
+                <label>Id</label><br />
+                @Html.TextBoxFor(m => m.Id, new { @Value = Model.Id, @class = "text-box", @readonly = "readonly" })
+            </div>
+        }
+
+        <div class="dataBox">
+            <label>Имя</label><br />
+            @Html.TextBoxFor(m => m.Name, new { @Value = Model?.Name ?? "", @class = "text-box" })
+        </div>
+        <div class="dataBox">
+            <label>Сценический псевдоним</label><br />
+            @Html.TextBoxFor(m => m.StageName, new { @Value = Model?.StageName ?? "", @class = "text-box" })
+        </div>
+        <div class="dataBox">
+            <label>Год рождения</label><br />
+            @Html.TextBoxFor(m => m.BirthYear, "1900", new
+           {
+               @Value = Model?.BirthYear ?? 2000,
+               type = "number",
+               @class = "text-box"
+           })
+        </div>
+        <div class="dataBox">
+            <input type="submit" value="Сохранить" />
+        </div>
+    }
+</div>
+<div>
+    <a asp-action="Index">На главную</a>
+</div>
